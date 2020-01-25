@@ -46,6 +46,8 @@ export default function Layout() {
   const classes = useStyles();
 
   // feedback from SpaceXgraphQL component
+  // NOTE: cannot use object since this will cause an infinite loop 
+  //       due to objects being different with each update from callback
   const [queryLoading, setQueryLoading] = useState(false);
 
   // query sent to SpaceXgraphQL
