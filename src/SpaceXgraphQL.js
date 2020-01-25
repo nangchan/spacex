@@ -17,6 +17,7 @@ const SpaceX = ({searchMissionName, searchRocketName, searchLaunchYear}) => (
         rocket {
           rocket_name
         }
+        launch_date_local
         launch_year
         details
       }
@@ -33,7 +34,7 @@ const SpaceX = ({searchMissionName, searchRocketName, searchLaunchYear}) => (
             flickr_image={launch.links.flickr_images[0]}
             video_link={launch.links.video_link}
             rocket_name={launch.rocket.rocket_name}
-            launch_year={launch.launch_year}
+            launch_date_local={launch.launch_date_local}
             details={launch.details} />
         </div>
       ));
