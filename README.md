@@ -2,6 +2,10 @@
 
 Sample project using SpaceX Server, GraphQL Apollo client, React and Material-UI
 
+### To clone
+
+    git clone https://github.com/nangchan/spacex.git
+
 ### To install
 
     yarn install
