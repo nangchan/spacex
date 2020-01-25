@@ -1,3 +1,4 @@
+// used with final-form to enforce multiple validation rules
 export const composeValidators = (...validators) => value => validators.reduce((error, validator) => error || validator(value), undefined)
 
 // numerical validation

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import AppBar from '@material-ui/core/AppBar';
@@ -8,9 +8,13 @@ import Typography from '@material-ui/core/Typography';
 
 import Search from './Search';
 import SpaceXgraphQL from './SpaceXgraphQL';
+import CustomizedSnackbars from './Notification';
 
 const drawerWidth = 340;
 
+/**
+ * Boiler code from Material-UI used to style permanent Drawer
+ */
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
@@ -32,17 +36,29 @@ const useStyles = makeStyles(theme => ({
   toolbar: theme.mixins.toolbar,
 }));
 
+/**
+ * Layout built from Material-UI permanent Drawer component.
+ * This will host the Search form used to specify queries and
+ * the results render with Material-UI Card utilizing the
+ * Material-UI snackbar notification system.
+ */
 export default function Layout() {
   const classes = useStyles();
 
-  const [query, setQuery] = React.useState({
+  // feedback from SpaceXgraphQL component
+  const [queryLoading, setQueryLoading] = useState(false);
+
+  // query sent to SpaceXgraphQL
+  const [query, setQuery] = useState({
     mission_name: '',
     rocket_name: '',
     launch_year: '',
+    limit: 10,
   });
 
   return (
     <div className={classes.root}>
+      <CustomizedSnackbars open={queryLoading} />
       <CssBaseline />
       <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
@@ -63,7 +79,12 @@ export default function Layout() {
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <SpaceXgraphQL searchMissionName={query.mission_name||''} searchRocketName={query.rocket_name||''} searchLaunchYear={query.launch_year||''} />
+        <SpaceXgraphQL
+          setQueryLoading={setQueryLoading}
+          searchMissionName={query.mission_name}
+          searchRocketName={query.rocket_name}
+          searchLaunchYear={query.launch_year}
+          searchLimit={query.limit} />
       </main>
     </div>
   );

@@ -7,53 +7,85 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardHeader from '@material-ui/core/CardHeader';
 import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
 
-import missingImage from './missing.jpg';
-import { CardActions } from '@material-ui/core';
+// used for displaying launches without images
+import missingImage from './images/missing.jpg';
 
-//<img src={logo} className="App-logo" alt="logo" />
-
+/**
+ * CSS styles used to render card so each card is uniformily sized
+ */
 const useStyles = makeStyles({
+  // used to specify card size
   card: {
     width: 345,
-    height: 545,
+    height: 525,
+  },
+  // used to style header
+  header: {
+    height:'6em',
   },
   media: {
     height: 280,
   },
+  link: {
+    textDecoration: 'none'
+  },
+  // used to style local launch date
+  date: {
+    marginTop:10,
+    textAlign:'right',
+    fontWeight:'bold'
+  },
+  // used to style details section with trimming using ellipsis
+  details: {
+    overflow: 'hidden',
+    display: '-webkit-box',
+    WebkitLineClamp: 5,
+    WebkitBoxOrient: 'vertical'
+  }
 });
 
-export default function MediaCard({mission_name, flickr_image, video_link, rocket_name, launch_date_local, details}) {
+/**
+ * Individual Materil-UI card used to display information regarding the launch
+ * 
+ * @param {string} missionName [optional] - Name of mission
+ * @param {string} flickrImage [optional] - Url to launch image
+ * @param {string} videoLink [optional] - Url to video link
+ * @param {string} rocketName [optional] - Name of rocket
+ * @param {string} shipImage [optional] - Url of ship image (used if launch image is unavailable)
+ * @param {string} launchDateLocal [optional] - Date of launch in local time
+ * @param {string} details [optional] - Text specifying launch details
+ * 
+ * @returns JSX Material-UI Card populated info specified by the above parameters
+ */
+export default function MediaCard({missionName, flickrImage, videoLink, rocketName, shipImage, launchDateLocal, details}) {
   const classes = useStyles();
 
   return (
     <Card className={classes.card}>
-      <CardHeader style={{height:'6em'}}
-        title={mission_name}
-        subheader={rocket_name}
+      <CardHeader className={classes.header}
+        title={missionName}
+        subheader={rocketName}
       />
-      <Link href={video_link} target='_blank' style={{textDecoration: 'none'}}>
-      <CardActionArea>
-        <CardMedia
-          className={classes.media}
-          image={flickr_image || missingImage}
-          title={rocket_name}
-        />
-        <CardContent>
-          <Typography variant="body2" color="textSecondary" component="p" style={{
-            overflow: 'hidden',
-            display: '-webkit-box',
-            WebkitLineClamp: 5,
-            WebkitBoxOrient: 'vertical'
-          }}>
-            {details}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button>{launch_date_local}</Button>
-        </CardActions>
-      </CardActionArea>
+      <Link href={videoLink}
+        className={classes.link}
+        target='_blank' // open in new tab
+      >
+        <CardActionArea>
+          <CardMedia
+            className={classes.media}
+            image={flickrImage || shipImage || missingImage} // use rocket image or ship image or default missing image
+            title={rocketName}
+          />
+          <CardContent>
+            <Typography variant="body2" color="textSecondary" component="p" className={classes.details}>
+              {details}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p" className={classes.date}>
+              {launchDateLocal}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
       </Link>
     </Card>
   );
