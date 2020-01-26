@@ -5,8 +5,11 @@ import Search from './Search';
 // for debugging
 //import beautify from 'js-beautify';
 
-
-test('renders search page', () => {
+/**
+ * Validate search page by populating each field and
+ * verifying the calls to setQuery
+ */
+test('test search page form fields', () => {
   // query sent to SpaceXgraphQL
   const [query, setQuery] = [
     {

@@ -52,6 +52,7 @@ const SpaceXgraphQL = (props) => {
       // notify parent of result size
       setQueryResultSize(data.launchesPast.length);
 
+      // construct media card via props
       const lists = data.launchesPast.map(launch => (
         <div style={{margin:10}} key={launch.id}>
           <MediaCard
