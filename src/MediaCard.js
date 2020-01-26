@@ -1,4 +1,5 @@
 import React from 'react';
+import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -28,7 +29,10 @@ const useStyles = makeStyles({
     height: 280,
   },
   link: {
-    textDecoration: 'none'
+    textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'none',
+    }
   },
   // used to style local launch date
   date: {
@@ -42,6 +46,17 @@ const useStyles = makeStyles({
     display: '-webkit-box',
     WebkitLineClamp: 5,
     WebkitBoxOrient: 'vertical'
+  },
+  detailsLong: {
+    display: 'block'
+  },
+  detailsMore: {
+    textAlign:'end',
+    textDecoration:'underline',
+    cursor: 'pointer'
+  },
+  hide: {
+    display: 'none'
   }
 });
 
@@ -63,32 +78,44 @@ export default function MediaCard({missionName, flickrImage, videoLink, rocketNa
   const launchDate = (new Date(launchDateUTC)).toLocaleString();
   const timeZone = new Date().toLocaleTimeString('en-us',{timeZoneName:'short'}).split(' ')[2]
 
+  const [expanded, setExpanded] = React.useState(false);
+
   return (
     <Card className={classes.card}>
       <CardHeader className={classes.header}
         title={missionName}
         subheader={rocketName}
       />
-      <Link href={videoLink}
-        className={classes.link}
-        target='_blank' // open in new tab
-      >
-        <CardActionArea>
+      <CardActionArea>
+        <Link href={videoLink}
+          className={classes.link}
+          target='_blank' // open in new tab
+        >
           <CardMedia
             className={classes.media}
             image={flickrImage || shipImage || missingImage} // use rocket image or ship image or default missing image
             title={rocketName}
           />
-          <CardContent>
-            <Typography variant="body2" color="textSecondary" component="p" className={classes.details}>
-              {details}
-            </Typography>
-            <Typography variant="body2" color="textSecondary" component="p" className={classes.date}>
-              {launchDate + ' (' + timeZone + ')'}
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Link>
+        </Link>
+      </CardActionArea>
+      <CardContent>
+        <Typography variant="body2" color="textSecondary" component="p" className={
+          clsx(classes.details, {
+            [classes.detailsLong]: expanded
+          })
+        }>
+          {details}
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p"
+          onClick={()=>setExpanded(true)}
+          className={clsx(classes.detailsMore, {[classes.hide]: expanded || !details || details.length < 234})} // manual calulation of text to determin if its shortened
+        >
+          more
+        </Typography>
+        <Typography variant="body2" color="textSecondary" component="p" className={classes.date}>
+          {launchDate + ' (' + timeZone + ')'}
+        </Typography>
+      </CardContent>
     </Card>
   );
 }

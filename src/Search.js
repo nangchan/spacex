@@ -34,7 +34,7 @@ const Search = ({query, setQuery, queryResultSize}) => {
         <form onSubmit={handleSubmit} noValidate>
           <ListItem button type="submit" component="button" selected={true} >
             <ListItemIcon><SearchIcon /></ListItemIcon>
-            <ListItemText primary={`Search [${queryResultSize}]`}/>
+            <ListItemText primary={`Found: ${queryResultSize}`}/>
           </ListItem>
           <Paper style={{ padding: 16 }} elevation={/* disable shadows */0}>
             <Grid container alignItems="flex-start" spacing={2}>
