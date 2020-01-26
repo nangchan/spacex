@@ -20,6 +20,7 @@ http://localhost:3000/
 
 ### To install
 
+    cd spacex
     yarn install
 
 ### To run the app
