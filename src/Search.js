@@ -20,10 +20,11 @@ const focusOnError = createDecorator()
  * 
  * @param {object} query [required] - Object containing query populated with defaults used to pre-populate limit
  * @param {function} setQuery [required] - Function used to set the query parameters received by the search form
+ * @param {number} queryResultSize [required] - Number of results from query used to display to the user
  * 
  * @returns JSX Final-Form search form used by the user to specify search criteria
  */
-const Search = ({query, setQuery}) => {
+const Search = ({query, setQuery, queryResultSize}) => {
 
   return (
     <Form
@@ -33,7 +34,7 @@ const Search = ({query, setQuery}) => {
         <form onSubmit={handleSubmit} noValidate>
           <ListItem button type="submit" component="button" selected={true} >
             <ListItemIcon><SearchIcon /></ListItemIcon>
-            <ListItemText primary="Search"/>
+            <ListItemText primary={`Search [${queryResultSize}]`}/>
           </ListItem>
           <Paper style={{ padding: 16 }} elevation={/* disable shadows */0}>
             <Grid container alignItems="flex-start" spacing={2}>
@@ -77,13 +78,14 @@ const Search = ({query, setQuery}) => {
                     native: true,
                   }}
                   component={TextField}
-                  label="Limit"
-                  defaultValue={query.limit}
+                  label="Search Limit"
+                  initialValue={query.limit}
                 >
                   <option value="5">5</option>
                   <option value="10">10</option>
                   <option value="25">25</option>
                   <option value="50">50</option>
+                  <option value="100">100</option>
                 </Field>
               </Grid>
               <Grid item style={{ }}>

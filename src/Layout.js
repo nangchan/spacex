@@ -10,6 +10,8 @@ import Search from './Search';
 import SpaceXgraphQL from './SpaceXgraphQL';
 import CustomizedSnackbars from './Notification';
 
+import { DEFAULT_SEARCH_LIMIT } from './settings';
+
 const drawerWidth = 340;
 
 /**
@@ -49,13 +51,14 @@ export default function Layout() {
   // NOTE: cannot use object since this will cause an infinite loop 
   //       due to objects being different with each update from callback
   const [queryLoading, setQueryLoading] = useState(false);
+  const [queryResultSize, setQueryResultSize] = useState(0);
 
   // query sent to SpaceXgraphQL
   const [query, setQuery] = useState({
     mission_name: '',
     rocket_name: '',
     launch_year: '',
-    limit: 10,
+    limit: DEFAULT_SEARCH_LIMIT,
   });
 
   return (
@@ -77,12 +80,13 @@ export default function Layout() {
         }}
       >
         <div className={classes.toolbar} />
-        <Search query={query} setQuery={setQuery} />
+        <Search query={query} setQuery={setQuery} queryResultSize={queryResultSize} />
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
         <SpaceXgraphQL
           setQueryLoading={setQueryLoading}
+          setQueryResultSize={setQueryResultSize}
           searchMissionName={query.mission_name}
           searchRocketName={query.rocket_name}
           searchLaunchYear={query.launch_year}

@@ -2,12 +2,14 @@ import React from 'react';
 import { Query } from 'react-apollo';
 import { gql } from 'apollo-boost';
 import MediaCard from './MediaCard';
+import { DEFAULT_SEARCH_LIMIT } from './settings';
 
 /**
  * Component responsible for querying SpaceX GraphQL API and constructing Material-UI MediaCards
  * 
  * @param {function} setQueryLoading [required] - Reach Hook setState used to pass loading state to parent
- * @param {number} searchLimit [required] - Limit of return set
+ * @param {function} setQueryResultSize [required] - Reach Hook setState used to pass result size to parent
+ * @param {number} searchLimit [optionsl] - Limit of return set
  * @param {string} searchMissionName [optional] - Name of mission to search
  * @param {string} searchRocketName [optional] - Name of rocket to search
  * @param {string} searchLaunchYear [optional] - Launch Year to search
@@ -16,7 +18,7 @@ import MediaCard from './MediaCard';
  */
 const SpaceXgraphQL = (props) => {
   // default undefined props to empty string for GraphQL to work
-  const {setQueryLoading, searchLimit, searchMissionName='', searchRocketName='', searchLaunchYear=''} = props;
+  const {setQueryLoading, setQueryResultSize, searchLimit=DEFAULT_SEARCH_LIMIT, searchMissionName='', searchRocketName='', searchLaunchYear=''} = props;
 
   return (
   <Query query={gql`
@@ -34,7 +36,7 @@ const SpaceXgraphQL = (props) => {
         ships {
           image
         }
-        launch_date_local
+        launch_date_utc
         launch_year
         details
       }
@@ -47,6 +49,9 @@ const SpaceXgraphQL = (props) => {
       if (loading) return <p style={{padding: 10}}></p>;
       if (error) return <p style={{padding: 10}}>Error :(</p>;
 
+      // notify parent of result size
+      setQueryResultSize(data.launchesPast.length);
+
       const lists = data.launchesPast.map(launch => (
         <div style={{margin:10}} key={launch.id}>
           <MediaCard
@@ -55,7 +60,7 @@ const SpaceXgraphQL = (props) => {
             videoLink={launch.links.video_link}
             rocketName={launch.rocket.rocket_name}
             shipImage={launch.ships[0] ? launch.ships[0].image : null}
-            launchDateLocal={launch.launch_date_local}
+            launchDateUTC={launch.launch_date_utc}
             details={launch.details} />
         </div>
       ));

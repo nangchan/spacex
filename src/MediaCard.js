@@ -18,7 +18,7 @@ const useStyles = makeStyles({
   // used to specify card size
   card: {
     width: 345,
-    height: 525,
+    //height: 525,
   },
   // used to style header
   header: {
@@ -53,13 +53,15 @@ const useStyles = makeStyles({
  * @param {string} videoLink [optional] - Url to video link
  * @param {string} rocketName [optional] - Name of rocket
  * @param {string} shipImage [optional] - Url of ship image (used if launch image is unavailable)
- * @param {string} launchDateLocal [optional] - Date of launch in local time
+ * @param {string} launchDateUTC [optional] - Date of launch in local time
  * @param {string} details [optional] - Text specifying launch details
  * 
  * @returns JSX Material-UI Card populated info specified by the above parameters
  */
-export default function MediaCard({missionName, flickrImage, videoLink, rocketName, shipImage, launchDateLocal, details}) {
+export default function MediaCard({missionName, flickrImage, videoLink, rocketName, shipImage, launchDateUTC, details}) {
   const classes = useStyles();
+  const launchDate = (new Date(launchDateUTC)).toLocaleString();
+  const timeZone = new Date().toLocaleTimeString('en-us',{timeZoneName:'short'}).split(' ')[2]
 
   return (
     <Card className={classes.card}>
@@ -82,7 +84,7 @@ export default function MediaCard({missionName, flickrImage, videoLink, rocketNa
               {details}
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p" className={classes.date}>
-              {launchDateLocal}
+              {launchDate + ' (' + timeZone + ')'}
             </Typography>
           </CardContent>
         </CardActionArea>
