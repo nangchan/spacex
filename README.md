@@ -1,7 +1,14 @@
 ## SpaceX GraphQL Sample
 
-Sample project using SpaceX Server, GraphQL Apollo client, React and Material-UI.
-If yarn launches the application without errors then go to:
+Sample project to search SpaceX past launches by mission name, rocket name and launch year using the following technologies:
+
+* SpaceX GraphQL Server
+* Apollo GraphQL Client Library
+* React (with Hooks)
+* Material-UI
+* Jest/Enzyme (for unit-testing)
+
+Once yarn launches the application go to:
 
 http://localhost:3000/
 
