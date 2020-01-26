@@ -12,6 +12,8 @@ Once yarn launches the application go to:
 
 http://localhost:3000/
 
+![screenshot](src/images/screenshot.png)
+
 ### To clone
 
     git clone https://github.com/nangchan/spacex.git
